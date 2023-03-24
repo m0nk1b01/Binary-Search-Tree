@@ -1,18 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "BinaryTree.h"
 
 #define ERROR -1;
-typedef struct node
-    {
-        char *word;
-        struct node* left;
-        struct node* right;
-    }node_type;
 
 
 //Declaration of nodes containing the 15 most common words
-
+/*
 node_type level4_0 = {"a", 0L, 0L};
 node_type level4_1 = {"are", 0L, 0L};
 node_type level4_2 = {"he", 0L, 0L};
@@ -37,12 +31,23 @@ node_type level2_1 = {"the", &level3_2, &level3_3};
 
 
 node_type root = {"it", &level2_0, &level2_1};
+*/
 
-
-char* searchTree(char* target)
+int* create_array()
 {
-    int depth = depthCheck();//Height of the tree
-    node_type* on = &root; //This is for reference as to what node is being looked at
+    int* bst_array[20];
+    for(int i = 0; i < sizeof(bst_array); i++)
+    {
+        bst_array[i] = rand() % sizeof(bst_array)*4;
+    }
+    return bst_array;
+}
+
+
+char* search_tree(char* target)
+{
+    int depth = depth_check();//Height of the tree
+    node_type* on = bst->root; //This is for reference as to what node is being looked at
 
     for(int i = 0; i < depth; i++)//loop through each layer of the tree
     {
@@ -60,27 +65,59 @@ char* searchTree(char* target)
         }
 
     }
-    return "bad bad bad";
+    return "error";
 }
 
-void sortTree()
+node_type* onn = &root;
+
+
+void traverse_tree()
+{
+
+    if(onn->left != 0L)
+    {
+        printf("%s\n",onn->word);
+        onn = onn->left;
+        traverse_tree();
+
+    }else if(onn->left == 0L)
+    {
+        printf("found the end");
+    }
+}
+
+void sort_tree()
 {
     //
 }
 
-void addNode()
+void add_node()
 {
-    node_type temp;
-    temp = malloc(sizeof(node_type));
-    findNewNode().
+    //node_type temp;
+    //temp = malloc(sizeof(node_type));
+    //findNewNode()
 }
 
-void removeNode()
+void remove_node()
 {
     //remove a node then call sortTree()
 }
 
-int depthCheck()
+node_type find_base() //trying to return the base of the linked list(the left most node)
+{
+    node_type* on = &root;
+    while(1)
+    {
+        if(on->left == 0L)
+        {
+            return *on;
+        }
+        on = on->left;
+    }
+}
+
+
+int depth_check()
 {
     node_type* on = &root;
     int depth = 1;//starts with a depth of 1 because it starts from root
@@ -98,13 +135,14 @@ int main()
     char word[32];//input the word being searched for
     printf("Select one of these words: \n and \n are \n for \n he \n in \n is \n it \n of \n on \n that \n the \n to \n was \n you\n--------------------------------------------\n");
     scanf("%s", word);
-    if(searchTree(word) != "bad bad bad")
+    if(search_tree(word) != "error")
     {
-        printf("I found the word: %s\n", searchTree(word));
+        printf("I found the word: %s\n", search_tree(word));
     }else
     {
         return ERROR;
     }
+
     return 0;
 
 }
