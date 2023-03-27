@@ -9,12 +9,10 @@ int* create_array()
 
     int bst_array[31];
     int arr_len = sizeof(bst_array)/sizeof(bst_array[0]);
-    printf("%d",arr_len);
     srand(time(NULL));
-    for(int i = 0; i < sizeof(bst_array)/8; i++)
+    for(int i = 0; i < arr_len; i++)
     {
         bst_array[i] = rand() % (int)sizeof(bst_array);
-        printf("%d, ", bst_array[i]);
     }
     return bst_array;
 }
@@ -172,8 +170,7 @@ int depth_check()
 
 int main()
 {
-    
-    int arr[] = create_array();
+    int arr[] = {2,4,6,8,1,2,3};
     print_array(arr);
     return 0;
 }
