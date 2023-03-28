@@ -4,59 +4,64 @@
 #include <time.h>
 #include <string.h>
 
-int* create_array()
+void create_array()
 {
-
-    int bst_array[31];
     int arr_len = sizeof(bst_array)/sizeof(bst_array[0]);
     srand(time(NULL));
+    int temp = 0;
     for(int i = 0; i < arr_len; i++)
     {
         bst_array[i] = rand() % (int)sizeof(bst_array);
     }
-    return bst_array;
 }
 
 void print_array(int arr[])
 {
-    int arr_len = sizeof(arr)/sizeof(arr[0]);
-    printf("%d", arr_len);
+    int arr_len = (int)sizeof(bst_array)/(int)sizeof(bst_array[0]);
     printf("[");
     for(int i = 0; i < arr_len - 1; i++)
     {
-        printf("%d,", arr[i]);
+        if(i >= arr_len -2)
+        {
+            printf("%d", arr[i]);
+        }else
+        {
+        printf("%d, ", arr[i]);
+        }
     }
     printf("]\n");
 }
 
-void sort_array(int* bst_array)
+void sort_array()
 {
     int temp = 0;
     int value = 0;
-    int arr_len = sizeof(bst_array)/8;
+    int arr_len = sizeof(bst_array)/sizeof(bst_array[0]);
     int min_index = 0;
     print_array(bst_array);
     for(int i = 0; i < arr_len - 1; i++) //iterate through array
     {
-        min_index = i;
         for(int x = 0; x < arr_len - 1; x++)
         {
-            if(bst_array[x] < bst_array[min_index])
+            if(bst_array[x] > bst_array[i])
             {
-                printf("%d is less than %d", bst_array[x], bst_array[min_index]);
-                min_index = x;
+                
+                temp = bst_array[i];
+                bst_array[i] = bst_array[x];
+                bst_array[x] = temp;
             }
         }
-        temp = bst_array[i];
-        bst_array[i] = bst_array[min_index];
-        bst_array[min_index] = temp;
+        
     }
     print_array(bst_array);
 
 
 }
 
+void elimitate_duplicates(int* arr)
+{
 
+}
 
 
 
@@ -170,7 +175,8 @@ int depth_check()
 
 int main()
 {
-    int arr[] = {2,4,6,8,1,2,3};
-    print_array(arr);
+    printf("\n\n\n\n");
+    create_array();
+    sort_array();
     return 0;
 }
