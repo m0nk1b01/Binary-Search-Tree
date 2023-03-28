@@ -17,6 +17,10 @@ typedef struct binary_search_tree
         struct node* root;
     }bst;
 
+
+int bst_array[31];
+
+
 char* search_tree(char*);
 void traverse_tree();
 void sort_tree();
@@ -24,9 +28,9 @@ void add_node();
 void remove_node();
 node_type find_base();
 int depth_check();
-int* create_array();
+void create_array();
 void print_array(int arr[]);
-
+void eliminate_duplicates(int* arr);
 
 
 #endif // BINARYTREE_H_INCLUDED
