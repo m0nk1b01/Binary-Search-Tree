@@ -3,22 +3,41 @@
 #include "binary_tree.h"
 #include <time.h>
 #include <string.h>
+#include <math.h>
 
 void create_array()
 {
+    int x = 0;
     int arr_len = sizeof(bst_array)/sizeof(bst_array[0]);
     srand(time(NULL));
-    int temp = 0;
     for(int i = 0; i < arr_len; i++)
     {
-        bst_array[i] = rand() % (int)sizeof(bst_array);
+        get_rand(i, bst_array, arr_len);
     }
 }
-
-void print_array(int arr[])
+int count = 0;  
+int get_rand(int i, int* arr, int arr_len)
 {
-    int arr_len = (int)sizeof(bst_array)/(int)sizeof(bst_array[0]);
-    printf("[");
+    count++;
+    int x = 0;
+    arr[i] = rand() % (int)sizeof(bst_array);
+
+        while(x < i)
+        {
+            if(arr[i] == arr[x])
+            {
+                get_rand(i, arr, arr_len);
+            }else
+            {
+                x++;
+            }
+        }
+    return arr[i];
+}
+
+void print_array(int* arr, int arr_len)
+{
+    printf("\n[");
     for(int i = 0; i < arr_len - 1; i++)
     {
         if(i >= arr_len -2)
@@ -32,43 +51,65 @@ void print_array(int arr[])
     printf("]\n");
 }
 
-void sort_array()
+void sort_array(int* arr, int arr_len)
 {
     int temp = 0;
     int value = 0;
-    int arr_len = sizeof(bst_array)/sizeof(bst_array[0]);
     int min_index = 0;
-    print_array(bst_array);
+    print_array(arr, arr_len);
     for(int i = 0; i < arr_len - 1; i++) //iterate through array
     {
         for(int x = 0; x < arr_len - 1; x++)
         {
-            if(bst_array[x] > bst_array[i])
+            if(arr[x] > arr[i])
             {
                 
-                temp = bst_array[i];
-                bst_array[i] = bst_array[x];
-                bst_array[x] = temp;
+                temp = arr[i];
+                arr[i] = arr[x];
+                arr[x] = temp;
             }
         }
         
     }
-    print_array(bst_array);
+    print_array(arr, arr_len);
 
 
 }
 
-void elimitate_duplicates(int* arr)
+void build_root(int value, tree_type* bst)
+{
+    node_type* temp_node = malloc(sizeof(node_type));
+    temp_node->data = value;
+    bst->root = temp_node;
+}
+
+void build_node(int value, tree_type* bst)
 {
 
 }
-
-
 
 //re-oder starting list based on how far it is from the median value then build tree
-void build_tree()
+void build_tree(int* arr, int arr_len, tree_type* bst)
 {
-
+    int denom = 0;
+    for(int i = 0; i < sqrt(arr_len); i++)
+    {
+        denom = pow(2, i) - 1;
+        for(int x = 1; x < denom; x = x + 2)
+        {
+            printf("building\n");
+            if(i == 0)
+            {
+                build_root(arr[x/denom], bst);   
+            }else
+            {
+                build_node(arr[x/denom], bst);
+                //build node
+                //search for node in tree
+                //when find null assign left or right to node
+            }
+        }
+    }
 
 }
 /*
@@ -175,8 +216,13 @@ int depth_check()
 
 int main()
 {
+    tree_type *bst = malloc(sizeof(tree_type));
+    bst->root = 0L;
     printf("\n\n\n\n");
     create_array();
-    sort_array();
+    int arr_len = sizeof(bst_array)/sizeof(bst_array[0]);
+    sort_array(bst_array, arr_len);
+    build_tree(bst_array, arr_len, bst);
+
     return 0;
 }
