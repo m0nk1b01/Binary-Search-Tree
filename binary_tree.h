@@ -12,25 +12,28 @@ typedef struct node
         struct node* right;
     }node_type;
 
-typedef struct binary_search_tree
+typedef struct tree
     {
         struct node* root;
-    }bst;
+    }tree_type;
 
 
 int bst_array[31];
 
-
+node_type find_base();
 char* search_tree(char*);
 void traverse_tree();
 void sort_tree();
-void add_node();
 void remove_node();
-node_type find_base();
 int depth_check();
 void create_array();
-void print_array(int arr[]);
-void eliminate_duplicates(int* arr);
+void print_array(int* arr, int arr_len);
+void sort_array(int* arr, int arr_len);
+int get_rand(int i, int* arr, int arr_len);
+void build_tree(int* arr, int arr_len, tree_type* bst);
+void build_root(int value, tree_type* bst);
+void build_node(int value, tree_type* bst);
+
 
 
 #endif // BINARYTREE_H_INCLUDED
