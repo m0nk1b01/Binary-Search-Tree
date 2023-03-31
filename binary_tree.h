@@ -21,11 +21,11 @@ typedef struct tree
 int bst_array[31];
 
 node_type find_base();
-char* search_tree(char*);
+int search_tree(int target_value, tree_type* bst, node_type *on);
 void traverse_tree();
 void sort_tree();
 void remove_node();
-int depth_check();
+int depth_check(tree_type* bst);
 void create_array();
 void print_array(int* arr, int arr_len);
 void sort_array(int* arr, int arr_len);
