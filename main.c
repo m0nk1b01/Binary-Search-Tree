@@ -85,7 +85,11 @@ void build_root(int value, tree_type* bst)
 
 void build_node(int value, tree_type* bst)
 {
-
+    tree_type* on;
+    if(search_tree(value, bst, on) == 1)
+    {
+        prinft("Number already exists")
+    }
 }
 
 //re-oder starting list based on how far it is from the median value then build tree
@@ -107,35 +111,37 @@ void build_tree(int* arr, int arr_len, tree_type* bst)
                 //build node
                 //search for node in tree
                 //when find null assign left or right to node
+                //ASSIGN LEFT AND RIGHT AS NULL YOU NUMB SKULL
             }
         }
     }
 
 }
-/*
-char* search_tree(char* target)
+
+int search_tree(int target_value, tree_type* bst, node_type *on )
 {
-    int depth = depth_check();//Height of the tree
-    node_type* on = bst->root; //This is for reference as to what node is being looked at
-    int depth = depthCheck();//Height of the tree
-    node_type* on = &root; //This is for reference as to what node is being looked at
-    for(int i = 0; i < depth; i++)//loop through each layer of the tree
-    {
-        if(strcmp(target, on->word) == 0) //compares target(the word being searched for) and the the current word
+    on = bst->root;
+   for(int i =0; i < depth_check(bst); i++)
+   {
+        if(target_value == on->data)
         {
-            return on->word;
-            return on->definition;
+            return 1;
+        }else if(target_value < on->data)
+        {
+            if(on->left != 0l)
+            {
+                on = on->left;
+            }else
+            {
+                return;
+            }
+        }else if(target_value > on->data)
+        {
+            on = on->right;
         }
-        if(strcmp(target, on->word) < 0) //if alphabetically before it will go to the left of the node
-@@ -65,47 +87,28 @@ char* search_tree(char* target)
-        }
-    }
-    return "error";
+   }
 }
 
-node_type* onn = &root;
-}
-*/
 
 void traverse_tree()
 {
@@ -182,19 +188,17 @@ void remove_node()
 }
 
 */
-/*
-node_type find_base() //trying to return the base of the linked list(the left most node)
+
+node_type find_base(tree_type* bst) //trying to return the base of the linked list(the left most node)
 {
-    node_type* on = &root;
-    node_type* on = tree->root;
+    node_type* on = bst->root;
     while(1)
     {
         if(on->left == 0L)
-@@ -115,8 +118,17 @@ node_type find_base() //trying to return the base of the linked list(the left mo
         on = on->left;
     }
 }
-*/
+
 void add_node()
 {
     //add a node then call sortTree()
@@ -205,17 +209,25 @@ void remove_node()
 {
     //remove a node then call sortTree()
 }
-/*
-int depth_check()
+
+int depth_check(tree_type* bst)
 {
-    node_type* on = &root;
-@@ -130,22 +142,21 @@ int depth_check()
+    int depth = 0;
+    node_type* on = bst->root;
+    while(on->left != 0L)
+    {
+        on = on->left;
+        depth++;
+    }
     return depth;
 }
-*/
+
+
+
 
 int main()
 {
+
     tree_type *bst = malloc(sizeof(tree_type));
     bst->root = 0L;
     printf("\n\n\n\n");
