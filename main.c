@@ -7,48 +7,53 @@
 
 void create_array()
 {
-    int x = 0;
-    int arr_len = sizeof(bst_array)/sizeof(bst_array[0]);
-    srand(time(NULL));
-    for(int i = 0; i < arr_len; i++)
+    int arr_len = sizeof(bst_array)/sizeof(bst_array[0]);//getting the number of indexes in bst_array
+    srand(time(NULL));//setting srand to the time so it is truely random
+    int count = 0;
+    printf("\narray length:%d", arr_len);
+
+    for(int i = 0; i <= arr_len + 2; i++)
     {
         get_rand(i, bst_array, arr_len);
+        count++;
     }
 }
 int count = 0;  
-int get_rand(int i, int* arr, int arr_len)
+void get_rand(int i, int* arr, int arr_len)//assigns a unique random integer to the index(i) 
 {
     count++;
     int x = 0;
-    arr[i] = rand() % (int)sizeof(bst_array);
+    arr[i] = rand() % (int)sizeof(bst_array); //assigns the random integer the range is proportional to the size of the array for no particular reason
 
         while(x < i)
         {
-            if(arr[i] == arr[x])
+            if(arr[i] == arr[x])//checking for uniqueness 
             {
-                get_rand(i, arr, arr_len);
+                get_rand(i, arr, arr_len);//if its not uniuqe... RECURSION!
             }else
             {
                 x++;
             }
         }
-    return arr[i];
+    return;
 }
 
-void print_array(int* arr, int arr_len)
+void print_array(int* arr, int arr_len)//prints a formatted version of an array
 {
+    int count = 0;
     printf("\n[");
     for(int i = 0; i < arr_len - 1; i++)
     {
-        if(i >= arr_len -2)
+        if(i >= arr_len -2)//checking for last index for formatings sake
         {
             printf("%d", arr[i]);
         }else
         {
         printf("%d, ", arr[i]);
         }
+        count++;
     }
-    printf("]\n");
+    printf("]%d\n",count);
 }
 
 void sort_array(int* arr, int arr_len)
@@ -56,14 +61,14 @@ void sort_array(int* arr, int arr_len)
     int temp = 0;
     int value = 0;
     int min_index = 0;
-    print_array(arr, arr_len);
+    print_array(arr, arr_len);//print before
     for(int i = 0; i < arr_len - 1; i++) //iterate through array
     {
-        for(int x = 0; x < arr_len - 1; x++)
+        for(int x = 0; x < arr_len - 1; x++)//iterate each index through the array and test the value
         {
-            if(arr[x] > arr[i])
+            //this is probably incredebly inefficeint, if you waited to switch the values until you found where the end point for it is
+            if(arr[x] > arr[i])//if x > i switch them
             {
-                
                 temp = arr[i];
                 arr[i] = arr[x];
                 arr[x] = temp;
@@ -71,7 +76,7 @@ void sort_array(int* arr, int arr_len)
         }
         
     }
-    print_array(arr, arr_len);
+    print_array(arr, arr_len);//print after to show difference
 
 
 }
@@ -83,30 +88,32 @@ void build_root(int value, tree_type* bst)
     bst->root = temp_node;
     bst->root->left = 0L;
     bst->root->right = 0L;
-    printf("%p", bst->root->left);
+    printf("\nCreated root node, data:%d\n", bst->root->data);
 }
 
 void build_node(int value, tree_type* bst)
 {
-    node_type* on = bst->root;
-    int x = search_tree(value, bst, on);
+    node_type* on = bst->root;//send pointer into search tree, then edit the data at "on"
+    int x = search_tree(value, bst, &on);
     if(x == 1)
     {
-        printf("Number already exists");
+        printf("\n%d already exists",value);
     }else if(x == 0)
     {
         node_type* new_node = malloc(sizeof(node_type));
         new_node->data = value;
-        if(on->data > value)
+        if(on->data > value)// values less than parent go to left
         {
-            on->right = new_node;
-        }else if(on->data < value)
-        {
+            printf("\non data:%d", on->data);
             on->left = new_node;
+        }else if(on->data < value)// values greater than parent go to right
+        {
+            printf("\non data:%d", on->data);
+            on->right = new_node;
         }
-        new_node->left = 0L;
-        new_node->right = 0L;
-        
+        new_node->left = 0l;
+        new_node->right = 0l;
+        printf("\ncreated node with a data value of: %d at %p", new_node->data, new_node);
     }
 }
 
@@ -114,54 +121,76 @@ void build_node(int value, tree_type* bst)
 void build_tree(int* arr, int arr_len, tree_type* bst)
 {
     int denom = 0;
-    for(int i = 0; i < sqrt(arr_len); i++)
+    int temp = 0;
+    int count = 0;
+    for(int i = 0; i < (sqrt(arr_len))-1; i++)
     {
-        denom = pow(2, i) - 1;
-        for(int x = 1; x < denom; x = x + 2)
+        printf("\n\ni:%d test:%d\n\n", i, arr_len);
+        denom = pow(2, i + 1) ;
+        printf("\n\n i = %d denom = %d", i, denom);
+        for(int x = 1; x < denom; x = x + 2)//odd numbers only for the numerator so there are no repeating indexes
         {
             if(i == 0)
             {
-                printf("building root");
-                build_root(arr[x/denom], bst);   
+                printf("\n\n%d/%d building index %d into node %d", x, denom, (arr_len*x)/denom, count);
+                build_root(arr[((arr_len/denom)*x)+1], bst); 
+                count++;  
             }else
             {
-                //build_node(arr[x/denom], bst);
+                printf("\n\n%d/%d building index %d into node %d", x, denom, (arr_len*x)/denom, count);
+                build_node(arr[((arr_len/denom)*x)-1], bst);
+                count++;
                 //build node
                 //search for node in tree
                 //when find null assign left or right to node
                 //ASSIGN LEFT AND RIGHT AS NULL YOU NUMB SKULL
+                //can iterate through entire tree if you search for each value from 1 to the greatest value which is root->left->left(til null)
             }
         }
+        
     }
-
 }
 
-int search_tree(int target_value, tree_type* bst, node_type *on )
+int search_tree(int target_value, tree_type* bst, node_type **output)
 {
-    on = bst->root;
-    for(int i =0; i < depth_check(bst); i++)
+    printf("\n searching tree for %d", target_value);
+    node_type *on = bst->root;
+    int depth = depth_check(bst);
+    for(int i =0; i <= depth; i++)//5 is max depth for this tree change to depth when get depth working
     {
-        if(target_value == on->data)
+        printf("\non node:%d", on->data);
+        if(target_value < on->data)
         {
-            return 1;
-        }else if(target_value < on->data)
-        {
+            //printf("\n %d is less than %d moving left", target_value, on->data);
             if(on->left == 0l)
             {
+                printf("\nFound where %d goes, it goes It goes to the left of %d",target_value, on->data);
+                printf(" at %p", on);
                 return 0;
             }else
             {
                 on = on->left;
+                *output = on;                
+                //printf("\nmoving left");
             }
         }else if(target_value > on->data)
         {
+            //printf("\n %d is greater than %d right %p", target_value, on->data, on->right);
             if(on->right == 0l)
             {
+                printf("\nFound where %d goes, it goes It goes to the right of %d",target_value, on->data);
+                printf(" at %p", on);
                 return 0;
             }else
             {
+                //printf("\nmoving right");
                 on = on->right;
+                *output = on;
             }
+        } else if(target_value == on->data)
+        {
+            printf("\ntarget data:%d on data:%d", target_value, on->data);
+            return 1;
         }
     }
 }
@@ -171,58 +200,8 @@ void traverse_tree()
 {
 
 }
-/*
-void set_parent()
-{
 
-    if(onn->left != 0L)
-    {
-        printf("%s\n",onn->word);
-        onn = onn->left;
-        traverse_tree();
 
-    }else if(onn->left == 0L)
-    node_type* on = findBase(); //set the on node to the base
-    while(1)
-    {
-        printf("found the end");
-        //printf("%s", on.)
-        if(on->next == 0L)
-        {
-            break;
-        }
-    }
-}
-
-void sort_tree()
-{
-    //
-}
-
-void add_node()
-{
-    //node_type temp;
-    //temp = malloc(sizeof(node_type));
-    //findNewNode()
-}
-
-void remove_node()
-{
-    //remove a node then call sortTree()
-}
-
-*/
-/*
-node_type find_base(tree_type* bst) //trying to return the base of the linked list(the left most node)
-{
-    node_type* on = bst->root;
-    while(1)
-    {
-        if(on->left == 0L)
-        on = on->left;
-    }
-}
-*/
 void add_node()
 {
     //add a node then call sortTree()
@@ -237,13 +216,39 @@ void remove_node()
 int depth_check(tree_type* bst)
 {
     int depth = 0;
+    int count = 0;
     node_type* on = bst->root;
-    printf("%p", &on->left);
-    while(on->left != 0L)
+    //printf("%p", &on->left);
+    //printf("%d", on->data);
+    for(int i = 0; i < 144; i++)//arbitrary limit to hit every number in the range, need to switch to iteratring through array to save time
     {
-        on = on->left;
-        depth++;
+        if(i < on->data)//if on->left is null then it has hit the bottom
+        {
+            if(on->left != 0l)
+            {
+                on = on->left;
+            }else
+            {  
+                break;
+            }
+            count++;
+        }else if(i > on->data)
+        {
+            if(on->right != 0l)
+            {
+                on = on->right;
+            }else
+            {  
+                break;
+            }
+            count++;
+        }
+        if(count > depth)
+        {
+            depth = count;
+        }
     }
+    printf("\ndepth:%d", depth);
     return depth;
 }
 
