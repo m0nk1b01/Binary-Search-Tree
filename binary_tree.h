@@ -33,7 +33,7 @@ void get_rand(int i, int* arr, int arr_len);
 void build_tree(int* arr, int arr_len, tree_type* bst);
 void build_root(int value, tree_type* bst);
 void build_node(int value, tree_type* bst);
-
+void user_inupt(tree_type* bst);
 
 
 #endif // BINARYTREE_H_INCLUDED
