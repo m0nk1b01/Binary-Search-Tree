@@ -151,12 +151,12 @@ void build_tree(int* arr, int arr_len, tree_type* bst)
     }
 }
 
-int search_tree(int target_value, tree_type* bst, node_type **output)
+int search_tree(int target_value, tree_type* bst, node_type **output) //searching for a null value where target_value is supposed to be
 {
     printf("\n searching tree for %d", target_value);
     node_type *on = bst->root;
     int depth = depth_check(bst);
-    for(int i =0; i <= depth; i++)//5 is max depth for this tree change to depth when get depth working
+    for(int i =0; i <= depth+1; i++)//5 is max depth for this tree change to depth when get depth working
     {
         printf("\non node:%d", on->data);
         if(target_value < on->data)
@@ -189,23 +189,12 @@ int search_tree(int target_value, tree_type* bst, node_type **output)
             }
         } else if(target_value == on->data)
         {
-            printf("\ntarget data:%d on data:%d", target_value, on->data);
-            return 1;
+            return 1;//Return 1 when the value is found
         }
     }
 }
 
 
-void traverse_tree()
-{
-
-}
-
-
-void add_node()
-{
-    //add a node then call sortTree()
-}
 
 
 void remove_node()
@@ -252,6 +241,16 @@ int depth_check(tree_type* bst)
     return depth;
 }
 
+void user_input(tree_type *bst)
+{
+    int value = 0;
+    while(1)
+    {
+    printf("\nEnter node value:");
+    scanf("%d", &value);
+    build_node(value, bst);
+    }
+}
 
 
 
@@ -266,5 +265,6 @@ int main()
     sort_array(bst_array, arr_len);
     build_tree(bst_array, arr_len, bst);
 
+    user_input(bst);
     return 0;
 }
